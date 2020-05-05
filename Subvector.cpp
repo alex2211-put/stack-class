@@ -11,13 +11,15 @@ Subvector::Subvector()
     top = 0;
     mas = nullptr;
 };
+
 Subvector::~Subvector()
 {
     capacity = 0;
     top = 0;
-    mas = nullptr;
+    delete [] mas;
 };
-bool Subvector::push_back (int d)
+
+bool Subvector::push_back(int d)
 {
     int s;
     int *p = mas;
@@ -35,13 +37,18 @@ bool Subvector::push_back (int d)
         top += 1;
         *(mas + top - 1) = s;
     }
+    delete [] p;
     return true;
 };
+
 int Subvector::pop_back()
 {
-    top--;
-    return *(mas + top);
+    if(top > 0)
+    {top--;
+        return *(mas + top);
+    } else return 0;
 };
+
 bool Subvector::resize(unsigned int new_capacity)
 {
     capacity += new_capacity;
@@ -49,19 +56,24 @@ bool Subvector::resize(unsigned int new_capacity)
     mas = new int[capacity];
     for (int i = 0; i < top; i++)
         *(mas + i) = *(p + i);
+    delete [] p;
     return true;
 };
+
 void Subvector::shrink_to_fit()
 {
     int *p = mas;
     capacity = top;
     for (int i = 0; i < top; i++)
         *(mas + i) = *(p + i);
+    delete [] p;
 };
+
 void Subvector::clear()
 {
     top = 0;
 };
+
 bool Subvector::init_from_file(char *filename)
 {
     std::ifstream i(filename);
@@ -69,23 +81,23 @@ bool Subvector::init_from_file(char *filename)
     if (!i.is_open())
     {
         return false;
-    }
-    else
+    } else
     {
         while (!(i.eof()))
-        {char s;
+        {
+            char s;
             i.get(s);
-            sum++;}
+            sum++;
+        }
     }
     capacity = sum;
-    mas = new int [capacity];
+    mas = new int[capacity];
     for (top = 0; top < capacity; top++)
     {
         if (!i.is_open())
         {
             return false;
-        }
-        else
+        } else
         {
             while (!(i.eof()))
             {
@@ -97,6 +109,7 @@ bool Subvector::init_from_file(char *filename)
     }
     return true;
 };
+
 bool Subvector::show()
 {
     for (int i = 0; i < top; i++)
@@ -104,3 +117,7 @@ bool Subvector::show()
     return true;
 };
 
+unsigned int Subvector::get_capacity()
+{
+    return capacity;
+}

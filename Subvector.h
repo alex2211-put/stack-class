@@ -14,13 +14,14 @@ private:
 public:
     Subvector();
     ~Subvector();
-    bool push_back (int d);
-    int pop_back();
+    bool push_back (int d) override;
+    int pop_back() override;
     bool resize(unsigned int new_capacity);
     void shrink_to_fit();
     void clear();
     bool init_from_file(char *filename);
     bool show();
+    unsigned int get_capacity();
 };
 
 #endif //STACK_SUBVECTOR_H

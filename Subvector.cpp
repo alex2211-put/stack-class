@@ -9,35 +9,42 @@ Subvector::Subvector()
 {
     capacity = 0;
     top = 0;
-    mas = nullptr;
+    mas = nullptr; 
 };
 
 Subvector::~Subvector()
 {
     capacity = 0;
     top = 0;
-    delete [] mas;
+    delete[] mas;
 };
 
 bool Subvector::push_back(int d)
 {
-    int s;
-    int *p = mas;
-    s = d;
     if (capacity == top)
     {
-        capacity++;
-        mas = new int[capacity];
-        for (int i = 0; i < top; i++)
-            *(mas + i) = *(p + i);
-        top += 1;
-        *(mas + top - 1) = s;
+	if(mas != nullptr)
+	{
+	       	int *p = mas;
+	        capacity++;
+        	mas = new int[capacity];
+        	for (int i = 0; i < top; i++)
+            		*(mas + i) = *(p + i);
+       		 top += 1;
+       		 *(mas + top - 1) = d;
+		delete [] p;
+	} else if (mas == nullptr)
+	{
+		capacity++;
+		mas = new int[capacity];
+		top += 1;
+		*(mas + top - 1) = d;	
+	}
     } else
     {
         top += 1;
-        *(mas + top - 1) = s;
+        *(mas + top - 1) = d;
     }
-    delete [] p;
     return true;
 };
 
@@ -62,16 +69,13 @@ bool Subvector::resize(unsigned int new_capacity)
 
 void Subvector::shrink_to_fit()
 {
-    int *p = mas;
     capacity = top;
-    for (int i = 0; i < top; i++)
-        *(mas + i) = *(p + i);
-    delete [] p;
 };
 
 void Subvector::clear()
 {
     top = 0;
+    capacity = 0;
 };
 
 bool Subvector::init_from_file(char *filename)
